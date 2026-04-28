@@ -39,4 +39,46 @@ function addToCart(id) {
   alert("Dodano do koszyka!");
 }
 
+const cartList = document.getElementById("cart-list");
+const totalElement = document.getElementById("total");
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// render koszyka
+function renderCart() {
+  cartList.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartList.innerHTML = "<p>Koszyk jest pusty</p>";
+    totalElement.innerText = "";
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const div = document.createElement("div");
+    div.classList.add("product");
+
+    div.innerHTML = `
+      <h3>${item.name}</h3>
+      <p>${item.price} zł</p>
+    `;
+
+    total += item.price;
+
+    cartList.appendChild(div);
+  });
+
+  totalElement.innerText = "Suma: " + total + " zł";
+}
+
+// czyszczenie koszyka
+function clearCart() {
+  localStorage.removeItem("cart");
+  cart = [];
+  renderCart();
+}
+
+renderCart();
 renderProducts();
